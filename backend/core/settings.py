@@ -40,13 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # our apps
-    'dockertest',
     'api',
 
     # third party apps
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -91,7 +89,7 @@ DATABASES = {
         # 'NAME': os.environ.get('POSTGRES_DB'),
         'USER': 'postgres',
         # 'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': 'wayne1995',
+        'PASSWORD': '',
         # 'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': '127.0.0.1',
         # 'HOST': 'db',
