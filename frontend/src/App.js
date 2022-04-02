@@ -1,22 +1,20 @@
 import React from "react";
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
-import ReduxThunk from "redux-thunk";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { HomePage } from "./pages";
-import { testReducer } from "./store/reducers/test";
-
-const rootReducer = combineReducers({
-  tests: testReducer,
-});
-
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+import { HomePage, SingleProductPage, ErrorPage } from "./pages";
+import { Header, Footer } from "./components";
 
 function App() {
   return (
-    <Provider store={store}>
-      <HomePage />
-    </Provider>
+    <Router>
+      <Header />
+      <Routes>
+        <Route exact path="/" element={<HomePage />} />
+        <Route exact path="/product/:id" element={<SingleProductPage />} />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 

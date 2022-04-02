@@ -1,43 +1,34 @@
-import React, { useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import styled from "styled-components";
 
-import * as testActions from "../store/actions/test";
+import { PRODUCTS } from "../utils/data";
+import { ProductCard } from "../components";
 
 function HomePage() {
-  const {
-    tests_loading: loading,
-    tests_error: error,
-    tests,
-  } = useSelector((state) => state.tests);
-
-  const dispatch = useDispatch();
-
-  const loadTests = useCallback(async () => {
-    await dispatch(testActions.setTests());
-  }, [dispatch]);
-
-  useEffect(() => {
-    loadTests();
-  }, [loadTests]);
-
-  if (loading) return <div>loading...</div>;
-
-  if (error.is_occured) return <div>{error.msg}</div>;
-
-  if (tests) {
-    return (
-      <div>
-        {tests.map((item) => {
-          const { id, title } = item;
-          return (
-            <div key={id}>
-              <h3>{title}</h3>
-            </div>
-          );
-        })}
+  return (
+    <Wrapper>
+      <div className="container page-100">
+        <h1>Latest Products</h1>
+        <div className="row">
+          {PRODUCTS.map((product) => {
+            return (
+              <div
+                key={product.id}
+                className="col-xl-3 col-lg-4 col-md-6 col-12"
+              >
+                <ProductCard product={product} />
+              </div>
+            );
+          })}
+        </div>
       </div>
-    );
-  }
+    </Wrapper>
+  );
 }
+
+const Wrapper = styled.main`
+  padding-top: 12px;
+  padding-bottom: 12px;
+`;
 
 export default HomePage;
