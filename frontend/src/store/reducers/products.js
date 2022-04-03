@@ -2,7 +2,7 @@ import {
   SET_PRODUCTS_LOADING,
   SET_PRODUCTS_SUCCESS,
   SET_PRODUCTS_ERROR,
-} from "../actions/products";
+} from "../constants/productConstants";
 
 const initialState = {
   products_loading: false,

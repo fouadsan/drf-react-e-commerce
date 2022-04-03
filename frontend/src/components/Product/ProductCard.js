@@ -8,11 +8,11 @@ function ProductCard({ product }) {
   const { id, name, image, rating, price, numReviews } = product;
   return (
     <Wrapper className="card  my-3 p-3">
-      <Link to={`/product/${id}`}>
+      <Link to={`/products/${id}`}>
         <img src={image} alt={name} className="card-img-top" />
       </Link>
       <div className="card-body">
-        <Link to={`/product/${id}`}>
+        <Link to={`/products/${id}`}>
           <h5 className="card-title">{name}</h5>
         </Link>
         <div className="card-text my-3">
