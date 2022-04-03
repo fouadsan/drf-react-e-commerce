@@ -1,0 +1,59 @@
+import axios from "../../utils/axios";
+import { Product } from "../../utils/models";
+
+export const SET_PRODUCTS_LOADING = "SET_PRODUCTS_LOADING";
+export const SET_PRODUCTS_SUCCESS = "SET_PRODUCTS_SUCCESS";
+export const SET_PRODUCTS_ERROR = "SET_PRODUCTS_ERROR";
+
+export const fetchProducts = (prodId) => {
+  let url = "products/";
+  if (prodId) {
+    url += prodId;
+  }
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: SET_PRODUCTS_LOADING,
+      });
+      const response = await axios.get(url);
+      if (response.status !== 200) {
+        dispatch({
+          type: SET_PRODUCTS_ERROR,
+          error_msg: "somthing went wrong!",
+        });
+        throw new Error("Something went wrong!");
+      }
+
+      const data = await response.data;
+
+      const loadedProducts = [];
+
+      data.map((product) => {
+        return loadedProducts.push(
+          new Product(
+            product.id,
+            product.name,
+            product.image,
+            product.description,
+            product.brand,
+            product.category,
+            product.price,
+            product.count_in_stock,
+            product.rating,
+            product.num_reviews
+          )
+        );
+      });
+
+      dispatch({
+        type: SET_PRODUCTS_SUCCESS,
+        products: loadedProducts,
+      });
+    } catch (error) {
+      dispatch({
+        type: SET_PRODUCTS_ERROR,
+        error_msg: "network error",
+      });
+    }
+  };
+};

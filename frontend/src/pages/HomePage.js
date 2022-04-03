@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 
+import * as productsActions from "../store/actions/products";
 import { PRODUCTS } from "../utils/data";
 import { ProductCard } from "../components";
 
 function HomePage() {
+  const { products_loading, products_error, products } = useSelector(
+    (state) => state.products
+  );
+
+  const dispatch = useDispatch();
+
+  const loadProducts = useCallback(async () => {
+    await dispatch(productsActions.fetchProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
   return (
     <Wrapper>
       <div className="container page-100">

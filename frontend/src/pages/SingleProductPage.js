@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 
+import * as productsActions from "../store/actions/products";
 import { Rating } from "../components";
 import { PRODUCTS } from "../utils/data";
 
 function SingleProductPage() {
   let { id } = useParams();
   const { name, image, description, rating, price, numReviews, countInStock } =
-    PRODUCTS.find((prod) => prod.id === parseInt(id));
+    PRODUCTS.find((prod) => prod.id === id);
+
+  const { products_loading, products_error, products } = useSelector(
+    (state) => state.products
+  );
+
+  const dispatch = useDispatch();
+
+  const loadProducts = useCallback(async () => {
+    await dispatch(productsActions.fetchProducts(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
   return (
     <Wrapper className="container page-100">
       <Link to={"/"} className="btn btn-secondary my-3">
