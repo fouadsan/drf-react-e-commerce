@@ -24,22 +24,22 @@ export const fetchSingleProduct = (id) => {
 
       const data = await response.data;
 
-      const loadedProduct = new Product(
-        data[0].id,
-        data[0].name,
-        data[0].image,
-        data[0].description,
-        data[0].brand,
-        data[0].category,
-        data[0].price,
-        data[0].count_in_stock,
-        data[0].rating,
-        data[0].num_reviews
+      const loadedSingleProduct = new Product(
+        data.id,
+        data.name,
+        data.image,
+        data.description,
+        data.brand,
+        data.category,
+        data.price,
+        data.count_in_stock,
+        data.rating,
+        data.num_reviews
       );
 
       dispatch({
         type: SET_PRODUCT_DETAIL_SUCCESS,
-        product: loadedProduct,
+        product: loadedSingleProduct,
       });
     } catch (error) {
       dispatch({

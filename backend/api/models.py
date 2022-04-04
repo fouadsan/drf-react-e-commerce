@@ -76,5 +76,8 @@ class ShippingAddress(models.Model):
     shipping_price = models.DecimalField(
         max_digits=7, decimal_places=2, blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = 'Shipping addresses'
+
     def __str__(self):
         return self.address
