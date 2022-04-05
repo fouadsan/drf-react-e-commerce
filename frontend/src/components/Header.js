@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { BiCartAlt, BiUser } from "react-icons/bi";
 
 function Header() {
+  const { total_items } = useSelector((state) => state.cart);
+
   return (
     <Wrapper>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -46,10 +49,11 @@ function Header() {
                 <NavLink
                   to={"/cart"}
                   className={(isActive) =>
-                    "nav-link" + (!isActive ? "active" : "")
+                    "nav-link cart-container" + (!isActive ? "active" : "")
                   }
                 >
                   <BiCartAlt />
+                  <span className="cart-value">{total_items}</span>
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -86,6 +90,32 @@ const Wrapper = styled.header`
     margin-right: 1rem;
   }
 
+  .cart-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    svg {
+      height: 1.6rem;
+      margin-left: 5px;
+    }
+  }
+
+  .cart-value {
+    position: absolute;
+    top: 1px;
+    right: -8px;
+    background: #b58900;
+    width: 10px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    color: #ffffff;
+    padding: 8px;
+  }
+
   svg {
     font-size: 1.5rem;
   }
@@ -99,6 +129,11 @@ const Wrapper = styled.header`
     .nav-link {
       margin-left: 0;
       margin-right: 0;
+    }
+
+    .cart-value {
+      top: 2px;
+      right: 0;
     }
   }
 `;

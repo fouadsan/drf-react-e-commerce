@@ -2,7 +2,7 @@ import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
   TOGGLE_CART_ITEM_AMOUNT,
-  CLEAR_CART,
+  CLEAR_THE_CART,
   COUNT_CART_TOTALS,
 } from "../constants/cartConstants";
 
@@ -20,7 +20,7 @@ export const cartReducer = (state = initialState, action) => {
       if (tempItem) {
         const tempCart = state.items.map((cartItem) => {
           if (cartItem.id === product.id) {
-            let newAmount = cartItem.amount + product.price * quantity;
+            let newAmount = cartItem.amount + quantity;
             if (newAmount > cartItem.max) {
               newAmount = cartItem.max;
             }
@@ -34,7 +34,7 @@ export const cartReducer = (state = initialState, action) => {
         const newItem = {
           id: product.id,
           name: product.name,
-          amount: product.price * quantity,
+          amount: quantity,
           image: product.image,
           price: product.price,
           max: product.countInStock,
@@ -48,6 +48,7 @@ export const cartReducer = (state = initialState, action) => {
 
     case TOGGLE_CART_ITEM_AMOUNT:
       const { pid, type } = action.payload;
+
       const NewtempCart = state.items.map((item) => {
         if (item.id === pid) {
           if (type === "inc") {
@@ -67,12 +68,12 @@ export const cartReducer = (state = initialState, action) => {
         }
         return item;
       });
-      return { ...state, cart: NewtempCart };
+      return { ...state, items: NewtempCart };
 
-    case action.type === CLEAR_CART:
+    case CLEAR_THE_CART:
       return { ...state, items: [] };
 
-    case action.type === COUNT_CART_TOTALS:
+    case COUNT_CART_TOTALS:
       const { total_items, total_amount } = state.items.reduce(
         (total, cartItem) => {
           const { amount, price } = cartItem;

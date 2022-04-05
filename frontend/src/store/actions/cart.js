@@ -2,7 +2,7 @@ import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
   TOGGLE_CART_ITEM_AMOUNT,
-  CLEAR_CART,
+  CLEAR_THE_CART,
   COUNT_CART_TOTALS,
 } from "../constants/cartConstants";
 
@@ -19,7 +19,7 @@ export const toggleAmount = (pid, type) => {
 };
 
 export const clearCart = () => {
-  return { type: CLEAR_CART };
+  return { type: CLEAR_THE_CART };
 };
 
 export const countCartTotals = () => {
