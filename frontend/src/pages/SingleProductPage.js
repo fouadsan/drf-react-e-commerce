@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 import * as singleProductActions from "../store/actions/singleProduct";
+import * as cartActions from "../store/actions/cart";
 import { Rating, Loading, Message } from "../components";
 
 function SingleProductPage() {
@@ -29,8 +30,8 @@ function SingleProductPage() {
       if (errorQty) {
         setErrorQty(false);
       }
-      console.log("added to cart");
-      navigate("./cart");
+      dispatch(cartActions.addToCart(product, quantity));
+      navigate("/cart");
     }
   };
 
