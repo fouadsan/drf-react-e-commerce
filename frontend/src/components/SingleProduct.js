@@ -44,7 +44,7 @@ function SingleProduct({ product }) {
         <div className="col-lg-6 col-12 image-container">
           <img src={product.image} alt={product.name} />
         </div>
-        <div className="col-lg-3 col-6">
+        <div className="col-lg-3 col-sm-6 col-12">
           <ul className="list-group-flush">
             <li className="list-group-item">{product.name}</li>
             <li className="list-group-item">
@@ -58,7 +58,7 @@ function SingleProduct({ product }) {
             <li className="list-group-item">And a fifth one</li>
           </ul>
         </div>
-        <div className="col-lg-3 col-6">
+        <div className="col-lg-3 col-sm-6 col-12">
           <div className="card">
             <ul className="list-group-flush m-0">
               <li className="list-group-item">

@@ -6,8 +6,17 @@ import {
   COUNT_CART_TOTALS,
 } from "../constants/cartConstants";
 
+const getLocalStorage = () => {
+  let items = localStorage.getItem("cart");
+  if (items) {
+    return JSON.parse(localStorage.getItem("cart"));
+  } else {
+    return [];
+  }
+};
+
 const initialState = {
-  items: [],
+  items: getLocalStorage(),
   total_items: 0,
   total_amount: 0,
 };
@@ -39,11 +48,13 @@ export const cartReducer = (state = initialState, action) => {
           price: product.price,
           max: product.countInStock,
         };
+        localStorage.setItem("cart", JSON.stringify([...state.items, newItem]));
         return { ...state, items: [...state.items, newItem] };
       }
 
     case REMOVE_FROM_CART:
       const tempCart = state.items.filter((item) => item.id !== action.pid);
+      localStorage.setItem("cart", JSON.stringify(tempCart));
       return { ...state, items: tempCart };
 
     case TOGGLE_CART_ITEM_AMOUNT:
@@ -68,9 +79,11 @@ export const cartReducer = (state = initialState, action) => {
         }
         return item;
       });
+      localStorage.setItem("cart", JSON.stringify(NewtempCart));
       return { ...state, items: NewtempCart };
 
     case CLEAR_THE_CART:
+      localStorage.setItem("cart", JSON.stringify([]));
       return { ...state, items: [] };
 
     case COUNT_CART_TOTALS:

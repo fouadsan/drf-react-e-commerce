@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
+import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import * as cartActions from "../store/actions/cart";
-import { CartTable, CartTotals, Message } from "../components";
+import { CartTable, CartTotals } from "../components";
 
 function CartPage() {
   const { items, total_items, total_amount } = useSelector(
@@ -22,16 +23,16 @@ function CartPage() {
 
   if (total_items) {
     return (
-      <main>
+      <Wrapper>
         <div className="container page-100">
           <CartTable items={items} />
-          <div className="d-flex justify-content-between">
-            <button type="button" className="btn btn-secondary">
-              continue Shopping
-            </button>
+          <div className="d-flex justify-content-between btns-container">
+            <Link to={"/"} className="btn btn-secondary">
+              Continue Shopping
+            </Link>
             <button
               type="button"
-              className="btn btn-outline-warning"
+              className="btn btn-outline-warning clear-btn"
               onClick={handleClearCart}
             >
               Clear Shopping Cart
@@ -39,7 +40,7 @@ function CartPage() {
           </div>
           <CartTotals totalItems={total_items} totalAmount={total_amount} />
         </div>
-      </main>
+      </Wrapper>
     );
   } else {
     return (
@@ -58,5 +59,25 @@ function CartPage() {
     );
   }
 }
+
+const Wrapper = styled.main`
+  .btns-container {
+    flex-direction: column;
+  }
+
+  .clear-btn {
+    margin-top: 1rem;
+  }
+
+  @media screen and (min-width: 348px) {
+    .btns-container {
+      flex-direction: row;
+    }
+
+    .clear-btn {
+      margin-top: 0;
+    }
+  }
+`;
 
 export default CartPage;

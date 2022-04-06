@@ -15,9 +15,11 @@ function CartTotals({ totalItems, totalAmount }) {
             Order Total :<span>${totalAmount.toFixed(2)}</span>
           </h4>
         </article>
-        <Link to="/checkout" className="btn btn-outline-primary">
-          proceed to checkout
-        </Link>
+        <div className="row justify-content-center">
+          <Link to="/checkout" className="btn btn-outline-primary">
+            proceed to checkout
+          </Link>
+        </div>
       </div>
     </Wrapper>
   );
@@ -27,11 +29,12 @@ const Wrapper = styled.section`
   margin-top: 3rem;
   display: flex;
   justify-content: center;
+
   article {
-    border: 1px solid #839496;
-    border-radius: var(--radius);
     padding: 1.5rem 3rem;
+    border: none;
   }
+
   h4,
   h5 {
     display: grid;
@@ -42,14 +45,27 @@ const Wrapper = styled.section`
   h4 {
     margin-top: 2rem;
   }
-  @media (min-width: 776px) {
-    justify-content: flex-end;
-  }
+
   .btn {
-    width: 100%;
+    width: 75%;
     margin-top: 1rem;
     text-align: center;
     font-weight: 700;
+  }
+
+  @media screen and (min-width: 776px) {
+    justify-content: flex-end;
+  }
+
+  @media screen and (min-width: 320px) {
+    article {
+      border: 1px solid #839496;
+      border-radius: var(--radius);
+    }
+
+    .btn {
+      width: 95%;
+    }
   }
 `;
 

@@ -18,7 +18,7 @@ function QuantityButtons({ increase, decrease, amount }) {
 
 const Wrapper = styled.div`
   display: grid;
-  width: 140px;
+  width: 100px;
   justify-items: center;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
@@ -36,6 +36,10 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 140px;
   }
 `;
 
