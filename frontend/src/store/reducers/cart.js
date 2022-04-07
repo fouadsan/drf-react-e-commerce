@@ -6,17 +6,12 @@ import {
   COUNT_CART_TOTALS,
 } from "../constants/cartConstants";
 
-const getLocalStorage = () => {
-  let items = localStorage.getItem("cart");
-  if (items) {
-    return JSON.parse(localStorage.getItem("cart"));
-  } else {
-    return [];
-  }
-};
+const cartStorage = localStorage.getItem("cart")
+  ? JSON.parse(localStorage.getItem("cart"))
+  : [];
 
 const initialState = {
-  items: getLocalStorage(),
+  items: cartStorage,
   total_items: 0,
   total_amount: 0,
 };

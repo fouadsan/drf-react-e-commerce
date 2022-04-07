@@ -9,6 +9,7 @@ import CartItem from "./cart/CartItem";
 import CartTable from "./cart/CartTable";
 import SingleProduct from "./SingleProduct";
 import CartTotals from "./cart/CartTotals";
+import FormContainer from "./FormContainer";
 
 export {
   Header,
@@ -22,4 +23,5 @@ export {
   CartItem,
   SingleProduct,
   CartTotals,
+  FormContainer,
 };

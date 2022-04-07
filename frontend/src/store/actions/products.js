@@ -51,7 +51,7 @@ export const fetchProducts = () => {
       dispatch({
         type: SET_PRODUCTS_ERROR,
         error_msg:
-          error.response && error.response.data.message
+          error.response && error.response.data.detail
             ? error.response.data.message
             : error.message,
       });

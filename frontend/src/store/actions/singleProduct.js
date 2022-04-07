@@ -45,7 +45,7 @@ export const fetchSingleProduct = (id) => {
       dispatch({
         type: SET_PRODUCT_DETAIL_ERROR,
         error_msg:
-          error.response && error.response.data.message
+          error.response && error.response.data.detail
             ? error.response.data.message
             : error.message,
       });
