@@ -1,11 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { BiCartAlt, BiUser } from "react-icons/bi";
 
+import { logout } from "../store/actions/user";
+
 function Header() {
   const { total_items } = useSelector((state) => state.cart);
+
+  const { user } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <Wrapper>
@@ -56,16 +66,44 @@ function Header() {
                   <span className="cart-value">{total_items}</span>
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink
-                  to={"/login"}
-                  className={(isActive) =>
-                    "nav-link" + (!isActive ? "active" : "")
-                  }
-                >
-                  <BiUser />
-                </NavLink>
-              </li>
+              {user ? (
+                <li className="nav-item dropdown">
+                  <NavLink
+                    to={"/profile"}
+                    className="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    {user.name}
+                  </NavLink>
+                  <div className="dropdown-menu">
+                    <NavLink to={"/profile"} className="dropdown-item">
+                      Profile
+                    </NavLink>
+                    <div className="dropdown-divider"></div>
+                    <button
+                      type="button"
+                      className="dropdown-item"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </li>
+              ) : (
+                <li className="nav-item">
+                  <NavLink
+                    to={"/login"}
+                    className={(isActive) =>
+                      "nav-link" + (!isActive ? "active" : "")
+                    }
+                  >
+                    <BiUser />
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -88,6 +126,10 @@ const Wrapper = styled.header`
   .nav-link {
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .dropdown {
+    width: 150px;
   }
 
   .cart-container {

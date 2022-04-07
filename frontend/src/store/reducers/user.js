@@ -34,7 +34,7 @@ export const userLoginReducer = (state = initialState, action) => {
       return { ...state, user: action.user, user_loading: false };
 
     case SET_USER_LOGOUT:
-      return state;
+      return {};
 
     default:
       return state;

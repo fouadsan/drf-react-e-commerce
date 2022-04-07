@@ -57,3 +57,12 @@ export const login = (email, password) => {
     }
   };
 };
+
+export const logout = () => {
+  localStorage.removeItem("user");
+  return async (dispatch) => {
+    dispatch({
+      type: SET_USER_LOGOUT,
+    });
+  };
+};
