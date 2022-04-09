@@ -3,12 +3,15 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
-import { login } from "../store/actions/user";
+import { register } from "../store/actions/user";
 import { Loading, Message, FormContainer } from "../components";
 
-function LoginPage() {
+function RegisterPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -19,13 +22,17 @@ function LoginPage() {
     user_loading: loading,
     user_error: error,
     user,
-  } = useSelector((state) => state.user);
+  } = useSelector((state) => state.userRegister);
 
   const dispatch = useDispatch();
 
   const handleAuthSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    if (password !== confirmPassword) {
+      setMessage("Passwords do not match");
+    } else {
+      dispatch(register(name, email, password));
+    }
   };
 
   useEffect(() => {
@@ -33,7 +40,6 @@ function LoginPage() {
       navigate(redirect);
     }
   }, [user, navigate, redirect]);
-
   return (
     <Wrapper>
       <div className="container page-100">
@@ -49,7 +55,21 @@ function LoginPage() {
         )}
         <FormContainer>
           <h1>Sign In</h1>
+          {message && <Message type={"warning"} text={message} />}
           <form onSubmit={handleAuthSubmit}>
+            <div className="form-group">
+              <label htmlFor="name" className="form-label mt-4">
+                Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="exampleInputEmail1" className="form-label mt-4">
                 Email address
@@ -83,19 +103,35 @@ function LoginPage() {
                 required
               />
             </div>
+            <div className="form-group">
+              <label
+                htmlFor="exampleInputPassword2"
+                className="form-label mt-4"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Password Confirmation"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
 
             <button type="submit" className="btn btn-primary my-3">
-              Sign In
+              Sign Up
             </button>
           </form>
           <div className="row py-3">
             <div className="col">
-              New Customer ?
+              Already have an account ?
               <Link
-                to={redirect ? `/register?redirect=${redirect}` : "/register"}
-                className="register-btn"
+                to={redirect ? `/login?redirect=${redirect}` : "/login"}
+                className="login-btn"
               >
-                <strong>Register.</strong>
+                <strong>Login.</strong>
               </Link>
             </div>
           </div>
@@ -106,7 +142,7 @@ function LoginPage() {
 }
 
 const Wrapper = styled.main`
-  .register-btn {
+  .login-btn {
     background: none;
     border: none;
     color: #839496;
@@ -117,4 +153,4 @@ const Wrapper = styled.main`
   }
 `;
 
-export default LoginPage;
+export default RegisterPage;
