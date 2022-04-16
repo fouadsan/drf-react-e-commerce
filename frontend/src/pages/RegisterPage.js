@@ -7,8 +7,8 @@ import { register } from "../store/actions/user";
 import { Loading, Message, FormContainer } from "../components";
 
 function RegisterPage() {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUserame] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -31,7 +31,7 @@ function RegisterPage() {
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      dispatch(register(name, email, password));
+      dispatch(register(email, username, password));
     }
   };
 
@@ -58,19 +58,6 @@ function RegisterPage() {
           {message && <Message type={"warning"} text={message} />}
           <form onSubmit={handleAuthSubmit}>
             <div className="form-group">
-              <label htmlFor="name" className="form-label mt-4">
-                Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
               <label htmlFor="exampleInputEmail1" className="form-label mt-4">
                 Email address
               </label>
@@ -86,6 +73,19 @@ function RegisterPage() {
               <small id="emailHelp" className="form-text text-muted">
                 We'll never share your email with anyone else.
               </small>
+            </div>
+            <div className="form-group">
+              <label htmlFor="name" className="form-label mt-4">
+                Username
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter name"
+                value={username}
+                onChange={(e) => setUserame(e.target.value)}
+                required
+              />
             </div>
             <div className="form-group">
               <label
@@ -108,7 +108,7 @@ function RegisterPage() {
                 htmlFor="exampleInputPassword2"
                 className="form-label mt-4"
               >
-                Password
+                Password Confirmation
               </label>
               <input
                 type="password"

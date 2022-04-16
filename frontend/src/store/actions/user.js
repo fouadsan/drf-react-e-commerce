@@ -12,7 +12,6 @@ import {
   SET_USER_DETAILS_LOADING,
   SET_USER_DETAILS_SUCCESS,
   SET_USER_DETAILS_ERROR,
-  SET_USER_DETAILS_RESET,
   SET_USER_UPDATE_LOADING,
   SET_USER_UPDATE_SUCCESS,
   SET_USER_UPDATE_ERROR,
@@ -30,11 +29,11 @@ export const login = (email, password) => {
           "Content-type": "application/json",
         },
       };
-      console.log(email, password);
+
       const response = await axios.post(
         "users/login/",
         {
-          username: email,
+          email: email,
           password: password,
         },
         config
@@ -49,13 +48,16 @@ export const login = (email, password) => {
       }
 
       const data = await response.data;
-      console.log(data);
+
       dispatch({
         type: SET_USER_LOGIN_SUCCESS,
-        user: data,
+        user: { ...data, password: password },
       });
 
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...data, password: password })
+      );
     } catch (error) {
       dispatch({
         type: SET_USER_LOGIN_ERROR,
@@ -74,14 +76,10 @@ export const logout = () => {
     dispatch({
       type: SET_USER_LOGOUT,
     });
-
-    dispatch({
-      type: SET_USER_DETAILS_RESET,
-    });
   };
 };
 
-export const register = (name, email, password) => {
+export const register = (email, username, password) => {
   return async (dispatch) => {
     try {
       dispatch({
@@ -95,10 +93,10 @@ export const register = (name, email, password) => {
       };
 
       const response = await axios.post(
-        "users/register/",
+        "users/account/",
         {
-          name: name,
           email: email,
+          username: username,
           password: password,
         },
         config
@@ -154,7 +152,7 @@ export const getUserDetails = () => {
         },
       };
 
-      const response = await axios.get("users/profile/", config);
+      const response = await axios.get("users/account/", config);
 
       if (response.status !== 201) {
         dispatch({
@@ -182,7 +180,7 @@ export const getUserDetails = () => {
   };
 };
 
-export const updateUserProfile = (user) => {
+export const updateUserProfile = (userData) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -198,7 +196,7 @@ export const updateUserProfile = (user) => {
         },
       };
 
-      const response = await axios.put("users/profile/update/", user, config);
+      const response = await axios.put("users/account/", userData, config);
 
       if (response.status !== 200) {
         dispatch({
@@ -209,19 +207,28 @@ export const updateUserProfile = (user) => {
       }
 
       const data = await response.data;
-      console.log(data);
+
       dispatch({
         type: SET_USER_UPDATE_SUCCESS,
-        user: data,
+        user: { ...data, password: userData.password },
       });
       dispatch({
         type: SET_USER_LOGIN_SUCCESS,
         user: {
           email: data.email,
-          password: data.password,
+          username: data.username,
+          password: userData.password,
         },
       });
-      localStorage.setItem("user", JSON.stringify(data));
+      const oldUserStorage = JSON.parse(localStorage.getItem("data"));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...oldUserStorage,
+          ...data,
+          password: userData.password,
+        })
+      );
     } catch (error) {
       dispatch({
         type: SET_USER_UPDATE_ERROR,

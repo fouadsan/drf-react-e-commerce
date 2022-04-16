@@ -33,16 +33,22 @@ function HomePage() {
           </div>
         ) : (
           <div className="row">
-            {products.map((prod) => {
-              return (
-                <div
-                  key={prod.id}
-                  className="col-xl-3 col-lg-4 col-md-6 col-12"
-                >
-                  <ProductCard product={prod} />
-                </div>
-              );
-            })}
+            {products.length ? (
+              products.map((prod) => {
+                return (
+                  <div
+                    key={prod.id}
+                    className="col-xl-3 col-lg-4 col-md-6 col-12"
+                  >
+                    <ProductCard product={prod} />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center mt-5">
+                <h3>No Product Found.</h3>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -76,7 +76,7 @@ function Header() {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    {user.email}
+                    {user.username}
                   </NavLink>
                   <div className="dropdown-menu">
                     <NavLink to={"/profile"} className="dropdown-item">
