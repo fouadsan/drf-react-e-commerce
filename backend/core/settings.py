@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # our apps
     'api',
+    'api.users.apps.UsersConfig',
 
     # third party apps
     'corsheaders',
@@ -149,6 +150,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+# Custom user models
+AUTH_USER_MODEL = "users.Account"
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
