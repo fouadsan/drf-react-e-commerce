@@ -22,7 +22,7 @@ function RegisterPage() {
     user_loading: loading,
     user_error: error,
     user,
-  } = useSelector((state) => state.userRegister);
+  } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 

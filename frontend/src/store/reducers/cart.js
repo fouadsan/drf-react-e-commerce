@@ -4,16 +4,28 @@ import {
   TOGGLE_CART_ITEM_AMOUNT,
   CLEAR_THE_CART,
   COUNT_CART_TOTALS,
+  CART_SAVE_SHIPPING_ADDRESS,
+  CART_SAVE_PAYMENT_METHOD,
 } from "../constants/cartConstants";
 
 const cartStorage = localStorage.getItem("cart")
   ? JSON.parse(localStorage.getItem("cart"))
   : [];
 
+const shippingAddressStorage = localStorage.getItem("shippingAddress")
+  ? JSON.parse(localStorage.getItem("shippingAddress"))
+  : {};
+
+const paymentMethodStorage = localStorage.getItem("paymentMethod")
+  ? JSON.parse(localStorage.getItem("paymentMethod"))
+  : {};
+
 const initialState = {
   items: cartStorage,
-  total_items: 0,
+  total_items: cartStorage.length,
   total_amount: 0,
+  shipping_address: shippingAddressStorage,
+  payment_method: paymentMethodStorage,
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -92,6 +104,14 @@ export const cartReducer = (state = initialState, action) => {
         { total_items: 0, total_amount: 0 }
       );
       return { ...state, total_items, total_amount };
+
+    case CART_SAVE_SHIPPING_ADDRESS:
+      localStorage.setItem("shippingAddress", JSON.stringify(action.payload));
+      return { ...state, shipping_address: action.payload };
+
+    case CART_SAVE_PAYMENT_METHOD:
+      localStorage.setItem("paymentMethod", JSON.stringify(action.payload));
+      return { ...state, payment_method: action.payload };
 
     default:
       return state;

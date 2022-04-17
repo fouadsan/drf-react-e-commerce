@@ -9,6 +9,8 @@ import {
   LoginPage,
   RegisterPage,
   ProfilePage,
+  ShippingPage,
+  PaymentPage,
 } from "./pages";
 import { Header, Footer } from "./components";
 
@@ -23,6 +25,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/shipping" element={<ShippingPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />

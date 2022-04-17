@@ -121,7 +121,8 @@ export const register = (email, username, password) => {
         type: SET_USER_LOGIN_SUCCESS,
         user: {
           email: data.email,
-          password: data.password,
+          username: data.username,
+          password: password,
         },
       });
     } catch (error) {

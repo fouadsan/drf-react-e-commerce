@@ -10,6 +10,7 @@ import CartTable from "./cart/CartTable";
 import SingleProduct from "./SingleProduct";
 import CartTotals from "./cart/CartTotals";
 import FormContainer from "./FormContainer";
+import CheckoutSteps from "./CheckoutSteps";
 
 export {
   Header,
@@ -24,4 +25,5 @@ export {
   SingleProduct,
   CartTotals,
   FormContainer,
+  CheckoutSteps,
 };

@@ -16,7 +16,7 @@ function CartTotals({ totalItems, totalAmount }) {
           </h4>
         </article>
         <div className="row justify-content-center">
-          <Link to="/checkout" className="btn btn-outline-primary">
+          <Link to="/shipping" className="btn btn-outline-primary">
             proceed to checkout
           </Link>
         </div>

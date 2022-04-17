@@ -4,6 +4,8 @@ import {
   TOGGLE_CART_ITEM_AMOUNT,
   CLEAR_THE_CART,
   COUNT_CART_TOTALS,
+  CART_SAVE_SHIPPING_ADDRESS,
+  CART_SAVE_PAYMENT_METHOD,
 } from "../constants/cartConstants";
 
 export const addToCart = (product, quantity) => {
@@ -24,4 +26,12 @@ export const clearCart = () => {
 
 export const countCartTotals = () => {
   return { type: COUNT_CART_TOTALS };
+};
+
+export const saveShippingAddress = (data) => {
+  return { type: CART_SAVE_SHIPPING_ADDRESS, payload: data };
+};
+
+export const savePaymentMethod = (data) => {
+  return { type: CART_SAVE_PAYMENT_METHOD, payload: data };
 };

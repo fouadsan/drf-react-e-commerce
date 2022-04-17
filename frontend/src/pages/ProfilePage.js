@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { getUserDetails, updateUserProfile } from "../store/actions/user";
-import { Loading, Message } from "../components";
+import { Message } from "../components";
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -30,6 +30,9 @@ function ProfilePage() {
       setMessage("Passwords do not match");
     } else {
       dispatch(updateUserProfile({ email, username, password }));
+      if (error.status) {
+        setMessage(error.msg);
+      }
     }
   };
 
