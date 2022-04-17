@@ -11,6 +11,7 @@ import {
   ProfilePage,
   ShippingPage,
   PaymentPage,
+  PlaceOrderPage,
 } from "./pages";
 import { Header, Footer } from "./components";
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/shipping" element={<ShippingPage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/placeorder" element={<PlaceOrderPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />
