@@ -11,6 +11,19 @@ function PlaceOrderPage() {
     (state) => state.cart
   );
   const navigate = useNavigate();
+
+  const shippingPrice = (total_amount > 100 ? 0 : 10).toFixed(2);
+  const taxPrice = Number(0.082 * total_amount).toFixed(2);
+  const totalPrice = (
+    Number(total_amount) +
+    Number(shippingPrice) +
+    Number(taxPrice)
+  ).toFixed(2);
+
+  const handlePlaceOrder = () => {
+    console.log("place order");
+  };
+
   return (
     <Wrapper>
       <div className="container page-100">
@@ -45,7 +58,6 @@ function PlaceOrderPage() {
                       return (
                         <li key={index} className="list-group-item">
                           <div className="row">
-                            <h3>{name}</h3>
                             <div className="col-md-1 col-2">
                               <img
                                 src={image}
@@ -79,8 +91,36 @@ function PlaceOrderPage() {
                   <li className="list-group-item">
                     <div className="row">
                       <div className="col">Items:</div>
-                      <div className="col">${total_amount}</div>
+                      <div className="col">${total_amount.toFixed(2)}</div>
                     </div>
+                  </li>
+                  <li className="list-group-item">
+                    <div className="row">
+                      <div className="col">Shipping:</div>
+                      <div className="col">${shippingPrice}</div>
+                    </div>
+                  </li>
+                  <li className="list-group-item">
+                    <div className="row">
+                      <div className="col">Tax:</div>
+                      <div className="col">${taxPrice}</div>
+                    </div>
+                  </li>
+                  <li className="list-group-item">
+                    <div className="row">
+                      <div className="col">Total:</div>
+                      <div className="col">${totalPrice}</div>
+                    </div>
+                  </li>
+                  <li className="list-group-item">
+                    <button
+                      type="button"
+                      className="btn btn-block"
+                      disabled={items === 0}
+                      onClick={handlePlaceOrder}
+                    >
+                      Place Order
+                    </button>
                   </li>
                 </ul>
               </div>

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 function CheckoutSteps({ step1, step2, step3, step4 }) {
-  console.log(step2);
   return (
     <Wrapper>
       <ul className="nav nav-pills justify-content-center p-4 mb-4">

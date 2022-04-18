@@ -1,11 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
 
+from api.users.models import Account
 from api.products.models import Product
 
 
 class Order(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     payment_method = models.CharField(max_length=200, blank=True, null=True)
     tax_price = models.DecimalField(
         max_digits=7, decimal_places=2, blank=True, null=True)
