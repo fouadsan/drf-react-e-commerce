@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
-import { saveShippingAddress } from "../store/actions/cart";
+import { createOrder } from "../store/actions/order";
 import { CheckoutSteps, Message } from "../components";
 
 function PlaceOrderPage() {
+  const {
+    order_loading: loading,
+    order_error: error,
+    order,
+  } = useSelector((state) => state.order);
+
   const { items, total_amount, shipping_address, payment_method } = useSelector(
     (state) => state.cart
   );
+
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const shippingPrice = (total_amount > 100 ? 0 : 10).toFixed(2);
@@ -21,8 +30,24 @@ function PlaceOrderPage() {
   ).toFixed(2);
 
   const handlePlaceOrder = () => {
-    console.log("place order");
+    dispatch(
+      createOrder({
+        orderItems: items,
+        shippingAddress: shipping_address,
+        paymentMethod: payment_method,
+        itemsPrice: total_amount,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      })
+    );
   };
+
+  useEffect(() => {
+    if (order) {
+      navigate(`/order/${order.id}`);
+    }
+  }, [order, navigate]);
 
   return (
     <Wrapper>
@@ -113,9 +138,14 @@ function PlaceOrderPage() {
                     </div>
                   </li>
                   <li className="list-group-item">
+                    {error.status && (
+                      <Message type={"warning"} text={error.msg} />
+                    )}
+                  </li>
+                  <li className="list-group-item">
                     <button
                       type="button"
-                      className="btn btn-block"
+                      className="btn btn-primary"
                       disabled={items === 0}
                       onClick={handlePlaceOrder}
                     >
@@ -137,6 +167,13 @@ const Wrapper = styled.main`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .btn {
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 700;
   }
 `;
 

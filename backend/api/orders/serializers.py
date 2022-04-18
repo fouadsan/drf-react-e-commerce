@@ -35,7 +35,7 @@ class OrderSerializer(serializers.ModelSerializer):
         return serializer.data
     
     def get_order_items(self, obj):
-        items = obj.order_items_set.all()
+        items = obj.orderitem_set.all()
         serializer = OrderItemSerializer(items, many=True)
         return serializer.data
     

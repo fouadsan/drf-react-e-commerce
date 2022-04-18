@@ -1,5 +1,4 @@
 import axios from "../../utils/axios";
-// import { Product } from "../../utils/models";
 
 import {
   SET_USER_LOGIN_LOADING,
