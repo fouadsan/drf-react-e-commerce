@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
-import { createOrder } from "../store/actions/order";
+import { createOrder, resetOrder } from "../store/actions/order";
+import { clearCart } from "../store/actions/cart";
 import { CheckoutSteps, Message } from "../components";
 
 function PlaceOrderPage() {
@@ -46,8 +47,10 @@ function PlaceOrderPage() {
   useEffect(() => {
     if (order) {
       navigate(`/order/${order.id}`);
+      dispatch(resetOrder());
+      dispatch(clearCart());
     }
-  }, [order, navigate]);
+  }, [order, navigate, dispatch]);
 
   return (
     <Wrapper>
@@ -57,7 +60,7 @@ function PlaceOrderPage() {
           <div className="col-md-8">
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
-                <h2>Shipping</h2>
+                <h3>Shipping</h3>
                 <p>
                   <strong>Shipping: </strong>
                   {shipping_address.address}, {shipping_address.city}
@@ -66,14 +69,14 @@ function PlaceOrderPage() {
                 </p>
               </li>
               <li className="list-group-item">
-                <h2>Payment Method</h2>
+                <h3>Payment Method</h3>
                 <p>
                   <strong>Method: </strong>
                   {payment_method}
                 </p>
               </li>
               <li className="list-group-item">
-                <h2>Order Items</h2>
+                <h3>Order Items</h3>
                 {items.length === 0 ? (
                   <Message type={"info"} text={"Your Cart Is Empty"} />
                 ) : (
@@ -83,17 +86,17 @@ function PlaceOrderPage() {
                       return (
                         <li key={index} className="list-group-item">
                           <div className="row">
-                            <div className="col-md-1 col-2">
+                            <div className="col-lg-1 col-md-2 col-2">
                               <img
                                 src={image}
                                 alt={name}
                                 className="img-fluid rounded"
                               />
                             </div>
-                            <div className="col">
+                            <div className="col-md-6 col-5">
                               <Link to={`/products/${id}`}>{name}</Link>
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-md-4 col-5">
                               {amount} X ${price} = $
                               {(amount * price).toFixed(2)}
                             </div>
@@ -111,11 +114,11 @@ function PlaceOrderPage() {
               <div className="card-body">
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
-                    <h2>Order Summary</h2>
+                    <h3>Order Summary</h3>
                   </li>
                   <li className="list-group-item">
                     <div className="row">
-                      <div className="col">Items:</div>
+                      <div className="col">Items Price:</div>
                       <div className="col">${total_amount.toFixed(2)}</div>
                     </div>
                   </li>
@@ -149,7 +152,16 @@ function PlaceOrderPage() {
                       disabled={items === 0}
                       onClick={handlePlaceOrder}
                     >
-                      Place Order
+                      {loading ? (
+                        <div
+                          className="spinner-border spinner-border-sm text-light"
+                          role="status"
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      ) : (
+                        <span>Place Order</span>
+                      )}
                     </button>
                   </li>
                 </ul>

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { BiCartAlt, BiUser } from "react-icons/bi";
 
 import { logout } from "../store/actions/user";
@@ -13,8 +13,11 @@ function Header() {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     dispatch(logout());
+    navigate("/login");
   };
 
   return (

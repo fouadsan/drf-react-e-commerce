@@ -2,6 +2,7 @@ import {
   SET_ORDER_CREATE_LOADING,
   SET_ORDER_CREATE_SUCCESS,
   SET_ORDER_CREATE_ERROR,
+  SET_ORDER_CREATE_RESET,
 } from "../constants/orderConstants";
 
 const initialState = {
@@ -31,6 +32,15 @@ export const orderReducer = (state = initialState, action) => {
         order_loading: false,
         order_error: { status: true, msg: action.error_msg },
       };
+
+    case SET_ORDER_CREATE_RESET:
+      return {
+        order_error: {
+          status: false,
+          msg: "",
+        },
+      };
+
     default:
       return state;
   }

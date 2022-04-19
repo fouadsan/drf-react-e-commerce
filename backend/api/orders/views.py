@@ -52,4 +52,4 @@ class OrderCreate(APIView):
             product.save()
         
         serializer = OrderSerializer(order, many=False)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

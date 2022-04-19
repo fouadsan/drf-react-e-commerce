@@ -17,6 +17,7 @@ function HomePage() {
 
   useEffect(() => {
     dispatch(productsActions.fetchProducts());
+    dispatch(productsActions.fetchProducts());
   }, [dispatch]);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import { saveShippingAddress } from "../store/actions/cart";
 import { FormContainer, CheckoutSteps } from "../components";
 
 function ShippingPage() {
+  const { user } = useSelector((state) => state.user);
   const { shipping_address } = useSelector((state) => state.cart);
 
   const [address, setAddress] = useState(shipping_address.address);
@@ -17,6 +18,12 @@ function ShippingPage() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

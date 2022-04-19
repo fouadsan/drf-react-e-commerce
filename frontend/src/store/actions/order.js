@@ -3,6 +3,7 @@ import {
   SET_ORDER_CREATE_LOADING,
   SET_ORDER_CREATE_SUCCESS,
   SET_ORDER_CREATE_ERROR,
+  SET_ORDER_CREATE_RESET,
 } from "../constants/orderConstants";
 
 export const createOrder = (order) => {
@@ -23,7 +24,7 @@ export const createOrder = (order) => {
 
       const response = await axios.post("orders/add/", order, config);
 
-      if (response.status !== 200) {
+      if (response.status !== 201) {
         dispatch({
           type: SET_ORDER_CREATE_ERROR,
           error_msg: "somthing went wrong!",
@@ -46,4 +47,8 @@ export const createOrder = (order) => {
       });
     }
   };
+};
+
+export const resetOrder = () => {
+  return { type: SET_ORDER_CREATE_RESET };
 };

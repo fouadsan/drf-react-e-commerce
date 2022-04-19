@@ -20,10 +20,14 @@ const paymentMethodStorage = localStorage.getItem("paymentMethod")
   ? JSON.parse(localStorage.getItem("paymentMethod"))
   : {};
 
+const totalAmountStorage = localStorage.getItem("totalAmount")
+  ? JSON.parse(localStorage.getItem("totalAmount"))
+  : 0;
+
 const initialState = {
   items: cartStorage,
   total_items: cartStorage.length,
-  total_amount: 0,
+  total_amount: totalAmountStorage,
   shipping_address: shippingAddressStorage,
   payment_method: paymentMethodStorage,
 };
@@ -90,8 +94,16 @@ export const cartReducer = (state = initialState, action) => {
       return { ...state, items: NewtempCart };
 
     case CLEAR_THE_CART:
-      localStorage.setItem("cart", JSON.stringify([]));
-      return { ...state, items: [] };
+      localStorage.setItem(
+        "cart",
+        JSON.stringify({
+          ...cartStorage,
+          items: [],
+          total_items: 0,
+          total_amount: 0,
+        })
+      );
+      return { ...state, items: [], total_items: 0, total_amount: 0 };
 
     case COUNT_CART_TOTALS:
       const { total_items, total_amount } = state.items.reduce(
@@ -103,6 +115,7 @@ export const cartReducer = (state = initialState, action) => {
         },
         { total_items: 0, total_amount: 0 }
       );
+      localStorage.setItem("totalAmount", JSON.stringify(total_amount));
       return { ...state, total_items, total_amount };
 
     case CART_SAVE_SHIPPING_ADDRESS:
