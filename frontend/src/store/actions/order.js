@@ -7,6 +7,7 @@ import {
 } from "../constants/orderConstants";
 
 export const createOrder = (order) => {
+  console.log(order);
   return async (dispatch, getState) => {
     try {
       dispatch({

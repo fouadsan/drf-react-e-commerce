@@ -1,13 +1,24 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
 from rest_framework import status
 from rest_framework.response import Response
 
 from .models import Order, OrderItem, ShippingAddress
 from .serializers import OrderSerializer
 from api.products.models import Product
+from api.users.models import Account
 
+
+class OrderDetailPermission(BasePermission):
+    message = "Not Authorized to view this order"
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS:
+            return True
+
+        return request.user.is_staff or obj.user == Account.objects.get(id=request.user.id)
 
 class OrderCreate(APIView):
     # queryset = OrderItem.objects.all()
@@ -15,13 +26,14 @@ class OrderCreate(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request, format='json'):
-        user=request.user,
+        user = Account.objects.get(id=request.user.id)
         data = request.data
         order_items = data['orderItems']
         
         if order_items and len(order_items) == 0:
             return Response({'detail': 'No Order Items'}, status=status.HTTP_400_BAD_REQUEST)
         order = Order.objects.create(
+            user=user,
             payment_method=data['paymentMethod'],
             tax_price=data['taxPrice'],
             shipping_price=data['shippingPrice'],
@@ -52,4 +64,11 @@ class OrderCreate(APIView):
             product.save()
         
         serializer = OrderSerializer(order, many=False)
+        print(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    
+class OrderDetalil(generics.RetrieveAPIView, OrderDetailPermission):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated, OrderDetailPermission]

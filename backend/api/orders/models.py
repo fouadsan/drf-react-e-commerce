@@ -39,7 +39,7 @@ class OrderItem(models.Model):
 
 class ShippingAddress(models.Model):
     order = models.OneToOneField(
-        Order, on_delete=models.CASCADE, null=True, blank=True)
+        Order, on_delete=models.CASCADE, related_name='order_shipp', null=True, blank=True)
     address = models.CharField(max_length=200, blank=True, null=True)
     city = models.CharField(max_length=200, blank=True, null=True)
     postal_code = models.CharField(max_length=200, blank=True, null=True)

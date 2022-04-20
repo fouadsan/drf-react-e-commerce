@@ -97,7 +97,6 @@ export const cartReducer = (state = initialState, action) => {
       localStorage.setItem(
         "cart",
         JSON.stringify({
-          ...cartStorage,
           items: [],
           total_items: 0,
           total_amount: 0,
