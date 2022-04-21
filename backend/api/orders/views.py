@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
@@ -21,8 +21,6 @@ class OrderDetailPermission(BasePermission):
         return request.user.is_staff or obj.user == Account.objects.get(id=request.user.id)
 
 class OrderCreate(APIView):
-    # queryset = OrderItem.objects.all()
-    # serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
     
     def post(self, request, format='json'):
@@ -57,18 +55,20 @@ class OrderCreate(APIView):
                 name=product.name,
                 quantity=item['amount'],
                 price=item['price'],
-                image=product.image.url
+                image=request.build_absolute_uri(product.image.url)
             )
             
             product.count_in_stock -= item.quantity
             product.save()
         
         serializer = OrderSerializer(order, many=False)
-        print(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     
-class OrderDetalil(generics.RetrieveAPIView, OrderDetailPermission):
+class OrderDetalil(generics.RetrieveUpdateAPIView, OrderDetailPermission):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated, OrderDetailPermission]
+    
+    def perform_update(self, serializer):
+        serializer.save(is_paid=True, paid_at=datetime.now())

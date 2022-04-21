@@ -7,7 +7,7 @@ import * as singleProductActions from "../store/actions/singleProduct";
 import { Loading, Message, SingleProduct } from "../components";
 
 function SingleProductPage() {
-  let { id } = useParams();
+  const { id } = useParams();
 
   const {
     product_loading: loading,

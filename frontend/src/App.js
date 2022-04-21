@@ -18,6 +18,7 @@ import {
   ShippingPage,
   PaymentPage,
   PlaceOrderPage,
+  SingleOrderPage,
 } from "./pages";
 import { Header, Footer } from "./components";
 
@@ -48,6 +49,10 @@ function App() {
         <Route
           path="/placeorder"
           element={user ? <PlaceOrderPage /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/order/:id"
+          element={user ? <SingleOrderPage /> : <Navigate to={"/login"} />}
         />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
