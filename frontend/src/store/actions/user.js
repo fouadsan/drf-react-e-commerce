@@ -14,7 +14,11 @@ import {
   SET_USER_UPDATE_LOADING,
   SET_USER_UPDATE_SUCCESS,
   SET_USER_UPDATE_ERROR,
+  SET_USER_LIST_LOADING,
+  SET_USER_LIST_SUCCESS,
+  SET_USER_LIST_ERROR,
 } from "../constants/userConstants";
+import { SET_ORDER_RESET } from "../constants/orderConstants";
 
 export const login = (email, password) => {
   return async (dispatch) => {
@@ -74,6 +78,9 @@ export const logout = () => {
   return async (dispatch) => {
     dispatch({
       type: SET_USER_LOGOUT,
+    });
+    dispatch({
+      type: SET_ORDER_RESET,
     });
   };
 };
@@ -232,6 +239,50 @@ export const updateUserProfile = (userData) => {
     } catch (error) {
       dispatch({
         type: SET_USER_UPDATE_ERROR,
+        error_msg:
+          error.response && error.response.data.detail
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+};
+
+export const fetchUsers = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SET_USER_LIST_LOADING,
+      });
+
+      const { user } = getState();
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.user.access}`,
+        },
+      };
+
+      const response = await axios.get("users/", config);
+
+      if (response.status !== 200) {
+        dispatch({
+          type: SET_USER_LIST_ERROR,
+          error_msg: "somthing went wrong!",
+        });
+        throw new Error("Something went wrong!");
+      }
+
+      const data = await response.data;
+
+      dispatch({
+        type: SET_USER_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: SET_USER_LIST_ERROR,
         error_msg:
           error.response && error.response.data.detail
             ? error.response.data.message

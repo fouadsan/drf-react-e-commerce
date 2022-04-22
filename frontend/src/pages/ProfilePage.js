@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { FaTimes } from "react-icons/fa";
 
 import { getUserDetails, updateUserProfile } from "../store/actions/user";
-import { Message } from "../components";
+import { fetchUserOrders } from "../store/actions/order";
+import { Loading, Message } from "../components";
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -15,6 +17,10 @@ function ProfilePage() {
     user,
     update_success,
   } = useSelector((state) => state.user);
+
+  const { order_loading, order_error, orders_list } = useSelector(
+    (state) => state.order
+  );
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -37,7 +43,6 @@ function ProfilePage() {
   };
 
   useEffect(() => {
-    console.log("render");
     if (!user) {
       navigate("/login");
     } else {
@@ -45,8 +50,10 @@ function ProfilePage() {
       setUsername(user.username);
       setPassword(user.password);
       dispatch(getUserDetails());
+      dispatch(fetchUserOrders());
     }
   }, [user, navigate, dispatch, update_success]);
+
   return (
     <Wrapper>
       <div className="container page-100">
@@ -132,6 +139,53 @@ function ProfilePage() {
           </div>
           <div className="col-lg-8 col-md-6 col-12">
             <h2>MY ORDERS</h2>
+            {order_loading ? (
+              <div className="row justify-content-center">
+                <Loading />
+              </div>
+            ) : order_error.status ? (
+              <Message type={"warning"} text={order_error.msg} />
+            ) : orders_list && orders_list.length ? (
+              <table className="table table-striped table-responsive table-sm">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Paid</th>
+                    <th>Delivered</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders_list.map((order) => {
+                    const { id, created_at, total_price, is_paid, paid_at } =
+                      order;
+
+                    return (
+                      <tr key={id}>
+                        <td>{id}</td>
+                        <td>{created_at.substring(0, 10)}</td>
+                        <td>${total_price}</td>
+                        <td>
+                          {is_paid ? paid_at.substring(0, 10) : <FaTimes />}
+                        </td>
+                        <td>
+                          <Link
+                            to={`/order/${id}`}
+                            className="btn btn-outline-success"
+                          >
+                            Details
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <Message type={"info"} text={"You Don't Have Orders."} />
+            )}
           </div>
         </div>
       </div>
@@ -142,6 +196,11 @@ function ProfilePage() {
 const Wrapper = styled.main`
   button {
     width: 75px;
+  }
+
+  svg {
+    height: 1.2rem;
+    color: #2aa198;
   }
 `;
 

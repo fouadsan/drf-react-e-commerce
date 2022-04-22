@@ -19,6 +19,7 @@ import {
   PaymentPage,
   PlaceOrderPage,
   SingleOrderPage,
+  UserListPage,
 } from "./pages";
 import { Header, Footer } from "./components";
 
@@ -53,6 +54,12 @@ function App() {
         <Route
           path="/order/:id"
           element={user ? <SingleOrderPage /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/admin/users"
+          element={
+            user && user.is_admin ? <UserListPage /> : <Navigate to={"*"} />
+          }
         />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

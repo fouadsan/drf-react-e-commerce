@@ -12,6 +12,9 @@ import {
   SET_USER_UPDATE_LOADING,
   SET_USER_UPDATE_SUCCESS,
   SET_USER_UPDATE_ERROR,
+  SET_USER_LIST_LOADING,
+  SET_USER_LIST_SUCCESS,
+  SET_USER_LIST_ERROR,
 } from "../constants/userConstants";
 
 const userStorage = localStorage.getItem("user")
@@ -26,6 +29,7 @@ const initialState = {
   },
   user: userStorage,
   update_success: false,
+  users_list: [],
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -55,12 +59,12 @@ export const userReducer = (state = initialState, action) => {
 
     case SET_USER_LOGOUT:
       return {
-        ...state,
         user: null,
         user_error: {
           status: false,
           msg: "",
         },
+        user_list: [],
       };
 
     case SET_USER_REGISTER_LOADING:
@@ -117,6 +121,23 @@ export const userReducer = (state = initialState, action) => {
           password: action.user.password,
         },
         update_success: true,
+        user_loading: false,
+      };
+
+    case SET_USER_LIST_LOADING:
+      return { ...state, user_loading: true };
+
+    case SET_USER_LIST_ERROR:
+      return {
+        ...state,
+        user_error: { status: true, msg: action.error_msg },
+        user_loading: false,
+      };
+
+    case SET_USER_LIST_SUCCESS:
+      return {
+        ...state,
+        users_list: action.payload,
         user_loading: false,
       };
 

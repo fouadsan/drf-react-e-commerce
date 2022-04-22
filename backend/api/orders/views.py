@@ -20,8 +20,14 @@ class OrderDetailPermission(BasePermission):
 
         return request.user.is_staff or obj.user == Account.objects.get(id=request.user.id)
 
-class OrderCreate(APIView):
+class OrderListCreate(APIView):
     permission_classes = [IsAuthenticated]
+    
+    def get(self, request, format=None):
+        user = Account.objects.get(id=request.user.id)
+        orders = Order.objects.filter(user=user)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, format='json'):
         user = Account.objects.get(id=request.user.id)
@@ -38,7 +44,7 @@ class OrderCreate(APIView):
             total_price=data['totalPrice'],
         )
         
-        shipping_address = ShippingAddress.objects.create(
+        ShippingAddress.objects.create(
             order=order,
             address=data['shippingAddress']['address'],
             city=data['shippingAddress']['city'],
