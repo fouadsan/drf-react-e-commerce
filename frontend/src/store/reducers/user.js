@@ -15,6 +15,9 @@ import {
   SET_USER_LIST_LOADING,
   SET_USER_LIST_SUCCESS,
   SET_USER_LIST_ERROR,
+  SET_USER_DELETE_LOADING,
+  SET_USER_DELETE_SUCCESS,
+  SET_USER_DELETE_ERROR,
 } from "../constants/userConstants";
 
 const userStorage = localStorage.getItem("user")
@@ -138,6 +141,25 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         users_list: action.payload,
+        user_loading: false,
+      };
+
+    case SET_USER_DELETE_LOADING:
+      return { ...state, user_loading: true };
+
+    case SET_USER_DELETE_ERROR:
+      return {
+        ...state,
+        user_error: { status: true, msg: action.error_msg },
+        user_loading: false,
+      };
+
+    case SET_USER_DELETE_SUCCESS:
+      return {
+        ...state,
+        users_list: state.users_list.filter(
+          (userItem) => userItem.id !== action.payload
+        ),
         user_loading: false,
       };
 

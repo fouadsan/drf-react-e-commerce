@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaCheck, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
 
-import { fetchUsers } from "../store/actions/user";
+import { fetchUsers, deleteUser } from "../store/actions/user";
 import { Loading, Message } from "../components";
 
 function UserListPage() {
@@ -21,7 +21,9 @@ function UserListPage() {
   }, [dispatch]);
 
   const handleDelete = (userId) => {
-    console.log("deleted", userId);
+    if (window.confirm("Are you sure you want to delete this user")) {
+      dispatch(deleteUser(userId));
+    }
   };
 
   return (

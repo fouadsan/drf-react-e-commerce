@@ -107,6 +107,34 @@ function Header() {
                   </NavLink>
                 </li>
               )}
+
+              {user && user.is_admin && (
+                <li className="nav-item dropdown">
+                  <NavLink
+                    to={"/profile"}
+                    className="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Administration
+                  </NavLink>
+                  <div className="dropdown-menu">
+                    <NavLink to={"/admin/users"} className="dropdown-item">
+                      Users
+                    </NavLink>
+                    <div className="dropdown-divider"></div>
+                    <NavLink to={"/admin/products"} className="dropdown-item">
+                      Products
+                    </NavLink>
+                    <div className="dropdown-divider"></div>
+                    <NavLink to={"/admin/orders"} className="dropdown-item">
+                      Orders
+                    </NavLink>
+                  </div>
+                </li>
+              )}
             </ul>
           </div>
         </div>

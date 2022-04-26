@@ -1,3 +1,4 @@
+from django.http import Http404
 from api.users.models import Account
 from .serializers import CustomUserSerializer
 from rest_framework import status
@@ -5,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.generics import ListAPIView
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.decorators import permission_classes
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -25,13 +27,25 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
     
 
-class UserList(ListAPIView):
+class UserList(generics.ListAPIView):
+    queryset = Account.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class AccountManage(APIView):
+    def get_object(self, pk):
+        try:
+            return Account.objects.get(pk=pk)
+        except Account.DoesNotExist:
+            raise Http404
+
     def post(self, request, format='json'):
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
